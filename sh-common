@@ -36,17 +36,6 @@ QUESTION_FLAG="${question_color}?"
 WARN_FLAG="${warn_color}!"
 NOTE_FLAG="${note_color}❯"
 
-#string matchings
-startswith() { [ "$1" != "${1#$2}" ]; }
-endswith() { [ "$1" != "${1%$2}" ]; }
-equals() { [ "$1" == "$2" ]; }
-contains() {
-  case "$1" in
-    *$2* ) return ${FLAG_TRUE}; ;;
-    * ) return ${FLAG_FALSE}; ;;
-  esac
-}
-
 #check if a file or a variable is empty
 empty(){
   if [ -f "$1" ]; then
@@ -55,6 +44,20 @@ empty(){
     [ -z "$1" ]
   fi
 }
+
+#string matchings
+startswith() { [ "$1" != "${1#$2}" ]; }
+endswith() { [ "$1" != "${1%$2}" ]; }
+equals() { [ "$1" == "$2" ]; }
+contains() {
+  if [ empty "$1" || empty "$2" ]; then return ${FLAG_FALSE}; fi
+  case "$1" in
+    *$2* ) return ${FLAG_TRUE}; ;;
+    * ) return ${FLAG_FALSE}; ;;
+  esac
+}
+
+
 
 check_boolean(){
   case "$1" in
