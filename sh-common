@@ -244,8 +244,9 @@ location(){
 }
 
 flag(){ local varname="FLAG_$1"; [ "${!varname}" == "${FLAG_TRUE}" ]; }
-unset_flag(){ unset "FLAG_$1"; }
+unset_flag(){ if empty "$1"; then return ${FLAG_ERROR}; fi; unset "FLAG_$1"; }
 set_flag(){
+  if empty "$1"; then return ${FLAG_ERROR}; fi
   local flag
   flag=${2:-$FLAG_TRUE}
   if check_boolean "$flag"; then
