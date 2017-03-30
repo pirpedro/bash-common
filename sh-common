@@ -153,7 +153,7 @@ unset USAGE
 #
 # --question=<value>         question string
 # --options=<value>          a comma separated string with options
-# --default=<default_value   choose a default answer throught options list
+# --default=<default_value>   choose a default answer throught options list
 # --boolean                  create a boolean (yes|no) question
 #
 ask(){
@@ -171,8 +171,11 @@ ask(){
       --free-answer ) set_flag free; ;;
     esac
   done
-  if [[ -z "$options" &&  -n "$ask_default_value" ]]; then
+  if empty "$options" && ! empty "$ask_default_value"; then
     options="$ask_default_value"
+  fi
+  if empty "$question_msg" || ( empty "$options" && ! flag free ); then
+    return ${FLAG_ERROR}
   fi
   options_string=`sed -r 's/,/|/g' <<< "$options"`
   question -f -n "${question_msg} [${options_string}]: "
@@ -182,15 +185,16 @@ ask(){
   for ((i = 0; i < ${#array[@]}; i++)); do
     if startswith "${array[i]}" "${answer}"; then
       export ask_answer=${array[i]}
-      return
+      return ${FLAG_TRUE}
     fi
   done
   if flag free; then
     export ask_answer=${answer:-$ask_default_value}
     unset_flag free
-    return
+    return ${FLAG_TRUE}
   fi
   export ask_answer=${ask_default_value}
+  return ${FLAG_TRUE}
 }
 
 #
@@ -209,6 +213,7 @@ ask_boolean(){
     default_string="no"
   fi
   ask --question="$msg" --default="${default_string}" --boolean
+  check_boolean "${ask_answer}"
 }
 
 location(){
