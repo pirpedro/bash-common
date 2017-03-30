@@ -114,12 +114,7 @@ __notify(){
 note(){ __notify --color="${note_color}" --flag="${NOTE_FLAG}" "$@"; }
 question(){ __notify --color="${question_color}" --flag="${QUESTION_FLAG}" "$@"; }
 warn(){ __notify --color="${warn_color}" --flag="${WARN_FLAG}" "$@";}
-die() { warn "Fatal: $@"; exit 1; }
-
-die () {
-	die_with_status 1 "$@"
-}
-
+die(){ die_with_status 1 "$@"; }
 die_with_status () {
 	status=$1
 	shift
