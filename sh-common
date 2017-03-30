@@ -122,24 +122,29 @@ die_with_status () {
 	exit "$status"
 }
 
+#for a better use of USAGE functionalities
+#we recommend to instantiate the variables
+#USAGE and/or LONG_USAGE before sourcing sh-common
+#in your script.
 dashless=$(basename -- "$0" | sed -e 's/-/ /')
 usage() {
-  die "usage: $dashless $USAGE"
+  local cmd_name
+  cmd_name=${1:-$dashless}
+  if [ -z "$LONG_USAGE" ]; then
+    echo "usage: $cmd_name $USAGE"
+  else
+    echo "usage: $cmd_name $USAGE
+
+  $LONG_USAGE"
+  fi
 }
 
-if [ -z "$LONG_USAGE" ]; then
-  LONG_USAGE="usage: $dashless $USAGE"
-else
-  LONG_USAGE="usage: $dashless $USAGE
-
-$LONG_USAGE"
-fi
-
-if ! empty "$USAGE" && equals "$1" "-h"; then
-  echo "$LONG_USAGE"
+if equals "$1" "-h"; then
+  usage
   exit
 fi
 unset LONG_USAGE
+unset USAGE
 
 #
 # Make a question
