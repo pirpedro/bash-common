@@ -6,7 +6,7 @@ load test_helper/helper
   msg="exit message"
   run die $msg
   assert_failure
-  assert_output $msg
+  assert_output "$msg"
 }
 
 @test "die - check exit function without message" {
@@ -19,5 +19,5 @@ load test_helper/helper
   msg="exit message"
   run die_with_status 2 $msg
   assert_failure 2
-  assert_output $msg
+  assert_output "$msg"
 }
