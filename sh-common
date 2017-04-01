@@ -273,3 +273,22 @@ set_global_flag(){
 empty_output(){
   [ $( "$@" | wc -c ) -eq 0 ]
 }
+
+#generate a random value
+random(){
+  local length=${1:-8}
+  local pattern=${2:-"A-Za-z0-9_"}
+	echo $(cat /dev/urandom | base64 | tr -dc $pattern | head -c$length)
+}
+
+#random number generator
+rng(){
+  local length=${1:-3}
+  local number=`random $length "0-9_" | sed -e "s/^[0]*//"`
+  if empty "$number"; then
+    number=0;
+  fi
+  echo "$number"
+}
+
+random; random; random;
