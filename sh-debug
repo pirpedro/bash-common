@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Holds common script debugging functionality
+
+# Set the PS4 variable to add line #s to our debug output
+PS4='Line $LINENO : '
+
+_DEBUG=0 #debug starts off
+
+# The function that enables the enabling/disabling of
+# debugging in the script.
+function DEBUG()
+{
+
+    if [ -z "$1"]; then
+      if [[ "$_DEBUG" -eq 0 ]]; then
+        set -x
+        _DEBUG=1
+      else
+        set +x
+        _DEBUG=0
+      fi
+    else
+      set -x
+      $@
+      set +x
+    fi
+  }
