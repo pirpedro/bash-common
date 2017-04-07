@@ -290,3 +290,58 @@ rng(){
   fi
   echo "$number"
 }
+
+# Array to hold the temporary files
+TEMPFILES=( )
+
+mktmp_file(){
+  # Give preference to user tmp directory for security
+  if [ -e "$HOME/tmp" ];then
+    TEMP_DIR="$HOME/tmp"
+  else
+    TEMP_DIR="/tmp"
+  fi
+
+  #Construct a "safe" temp file using mktemp
+  TEMP_FILE=$(mktemp --tmpdir=$TEMP_DIR  XXXXXXXXXX)
+
+  # Keep the file in an array to remove it later
+  TEMPFILES+=( "$TEMP_FILE" )
+  echo "$TEMP_FILE"
+}
+
+# Function that sets certain environment variables to known values
+function clear_vars {
+    # Save the old variables so that they can be restored
+    OLD_IFS="$IFS"
+    OLD_PATH="$PATH"
+
+    # Set the variables to known safer values
+    IFS=$' tn' #Set IFS to include whitespace characters
+}
+
+# Function that restores environment variables to what the were at the
+# start of the script.
+function restore_vars {
+    IFS="$OLD_IFS"
+    PATH="$OLD_PATH"
+}
+
+# Function to clean up after ourselves
+function clean_up {
+    # Step through and delete all of the temp files
+    for TMP_FILE in "${TEMPFILES[@]}"
+    do
+        # Make sure that the tempfile exists
+        if [ -e "$TMP_FILE" ]; then
+            rm $TMP_FILE
+        fi
+    done
+
+    # Reset the variables to their original values
+    restore_vars
+}
+
+# Make sure that we delete the temp files when we exit
+trap 'clean_up' EXIT
+clear_vars
