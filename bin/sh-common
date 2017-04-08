@@ -379,6 +379,33 @@ function extract {
   fi
 }
 
+function expand_path {
+  ! empty "$1" || die "No argument passed to expand_path."
+  local path="$1"
+  case "$1" in
+    "~+"/*)
+      path=$PWD/${path#"~+/"}
+      ;;
+    "~-"/*)
+      path=$OLDPWD/${path#"~-/"}
+      ;;
+    "~"/*)
+      path=$HOME/${path#"~/"}
+      ;;
+    "~"*)
+      username=${path%%/*}
+      username=${username#"~"}
+      local IFS=: read _ _ _ _ _ homedir _ < <(getent passwd "$username")
+      if [[ $path = */* ]]; then
+        path=${homedir}/${path#*/}
+      else
+        path=$homedir
+      fi
+      ;;
+  esac
+  echo "$path"
+}
+
 # Make sure that we delete the temp files when we exit
 trap 'clean_up' EXIT
 clear_vars
