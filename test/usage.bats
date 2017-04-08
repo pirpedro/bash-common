@@ -3,7 +3,9 @@
 load test_helper/helper
 
 function setup(){
-  TMP_SCRIPT="$(mktemp $HOME/tmp/focaXXXXX)"
+  [ -d ~/tmp ] || mkdir ~/tmp
+  rm -rf ~/tmp/*
+  TMP_SCRIPT="$(mktmp_file)"
   echo "#!/bin/bash
 source ../sh-common
   " >> "$TMP_SCRIPT"
