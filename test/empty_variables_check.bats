@@ -5,7 +5,7 @@ load test_helper/helper
 TMP_FILE="empty_variable_tmp"
 
 function setup(){
-  touch $TMP_FILE
+  TMP_FILE=$(mktmp_file)
 }
 
 function teardown(){
