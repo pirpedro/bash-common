@@ -19,7 +19,7 @@ function teardown(){
 @test "usage - simple use" {
   echo "usage" >> "$TMP_SCRIPT"
   run "$TMP_SCRIPT"
-  assert_output "usage: $(basename $TMP_SCRIPT) "
+  assert_output "usage: $(basename ${TMP_SCRIPT%.*}) "
 }
 
 @test "usage - changing command name" {
@@ -34,7 +34,7 @@ function teardown(){
   echo "USAGE=\"$usage_info\"
 usage" >> $TMP_SCRIPT
   run "$TMP_SCRIPT"
-  assert_output "usage: $(basename $TMP_SCRIPT) $usage_info"
+  assert_output "usage: $(basename ${TMP_SCRIPT%.*}) $usage_info"
 }
 
 @test "usage - long usage version" {
@@ -42,7 +42,7 @@ usage" >> $TMP_SCRIPT
   echo "LONG_USAGE=\"$long_usage\"
 usage" >> $TMP_SCRIPT
   run "$TMP_SCRIPT"
-  assert_equal "${lines[0]}" "usage: $(basename $TMP_SCRIPT) "
+  assert_equal "${lines[0]}" "usage: $(basename ${TMP_SCRIPT%.*}) "
   assert_equal "${lines[1]}" "  $long_usage"
 }
 
@@ -53,7 +53,7 @@ usage" >> $TMP_SCRIPT
   LONG_USAGE=\"$long_usage\"
   usage" >> $TMP_SCRIPT
   run "$TMP_SCRIPT"
-  assert_equal "${lines[0]}" "usage: $(basename $TMP_SCRIPT) $usage_info"
+  assert_equal "${lines[0]}" "usage: $(basename ${TMP_SCRIPT%.*}) $usage_info"
   assert_equal "${lines[1]}" "  $long_usage"
 }
 
@@ -68,5 +68,5 @@ usage" >> $TMP_SCRIPT
   USAGE=\"$usage_info\"
   source ../sh-common" >> $TMP_SCRIPT
   run $TMP_SCRIPT -h
-  assert_output "usage: $(basename $TMP_SCRIPT) $usage_info"
+  assert_output "usage: $(basename ${TMP_SCRIPT%.*}) $usage_info"
 }

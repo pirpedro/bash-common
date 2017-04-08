@@ -9,20 +9,22 @@ _DEBUG=0 #debug starts off
 
 # The function that enables the enabling/disabling of
 # debugging in the script.
-function DEBUG()
-{
+function DEBUG_WATCH() {
+  [ ! -z "$1" ] || { echo "Nothing to watch."; exit 1; }
+  PS4='Line ${BASH_LINENO[$i]} : '
+  set -x
+  $@
+  set +x
+  PS4='Line $LINENO : '
+}
 
-    if [ -z "$1"]; then
-      if [[ "$_DEBUG" -eq 0 ]]; then
-        set -x
-        _DEBUG=1
-      else
-        set +x
-        _DEBUG=0
-      fi
-    else
-      set -x
-      $@
-      set +x
-    fi
-  }
+function DEBUG {
+  set +x
+  if [[ "$_DEBUG" -eq 0 ]]; then
+    _DEBUG=1
+    set -x
+  else
+    set +x
+    _DEBUG=0
+  fi
+}
