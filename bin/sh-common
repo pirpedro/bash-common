@@ -36,12 +36,15 @@ QUESTION_FLAG="${question_color}?"
 WARN_FLAG="${warn_color}!"
 NOTE_FLAG="${note_color}❯"
 
-#check if a file or a variable is empty
-empty(){
+#check if a variable is empty
+empty(){ [ -z "$1" ]; }
+
+#check if a file is empty
+empty_file(){
   if [ -f "$1" ]; then
-    [ ! -s "$1" ]
+    [ ! -s $1 ]
   else
-    [ -z "$1" ]
+    return ${FLAG_ERROR}
   fi
 }
 
