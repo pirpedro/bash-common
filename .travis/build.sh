@@ -3,5 +3,6 @@
 ##execute script for sintaxe test.
 $TRAVIS_BUILD_DIR/sh-common
 #if [[ $TRAVIS_BRANCH == 'test_suite' ]]; then
-cd $TRAVIS_BUILD_DIR/test/ && bats .
+chmod +x $TRAVIS_BUILD_DIR/test/run_tests.sh
+$TRAVIS_BUILD_DIR/test/run_tests.sh
 #fi
