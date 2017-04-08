@@ -17,5 +17,5 @@ load_lib() {
 load_lib bats-support
 load_lib bats-assert
 
-source "../sh-common"
-source "../sh-debug"
+source "../bin/sh-common"
+source "../bin/sh-debug"

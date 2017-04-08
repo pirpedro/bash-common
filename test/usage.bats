@@ -7,7 +7,7 @@ function setup(){
   rm -rf ~/tmp/*
   TMP_SCRIPT="$(mktmp_file)"
   echo "#!/bin/bash
-source ../sh-common
+source ../bin/sh-common
   " >> "$TMP_SCRIPT"
   chmod +x "$TMP_SCRIPT"
 }
@@ -66,7 +66,7 @@ usage" >> $TMP_SCRIPT
   usage_info="some information about the script."
   echo "#!/bin/bash
   USAGE=\"$usage_info\"
-  source ../sh-common" >> $TMP_SCRIPT
+  source ../bin/sh-common" >> $TMP_SCRIPT
   run $TMP_SCRIPT -h
   assert_output "usage: $(basename ${TMP_SCRIPT%.*}) $usage_info"
 }
