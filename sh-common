@@ -282,7 +282,7 @@ random(){
 }
 
 #random number generator
-rng(){
+function rng{
   local length=${1:-3}
   local number=`random $length "0-9_" | sed -e "s/^[0]*//"`
   if empty "$number"; then
@@ -291,10 +291,7 @@ rng(){
   echo "$number"
 }
 
-# Array to hold the temporary files
-TEMPFILES=( )
-
-mktmp_file(){
+function mktmp_file{
   # Give preference to user tmp directory for security
   if [ -e "$HOME/tmp" ];then
     TEMP_DIR="$HOME/tmp"
@@ -303,10 +300,7 @@ mktmp_file(){
   fi
 
   #Construct a "safe" temp file using mktemp
-  TEMP_FILE=$(mktemp --tmpdir=$TEMP_DIR  XXXXXXXXXX)
-
-  # Keep the file in an array to remove it later
-  TEMPFILES+=( "$TEMP_FILE" )
+  TEMP_FILE=$(mktemp "$TEMP_DIR/mytmp.XXXXXXXXXXXXXXXX")
   echo "$TEMP_FILE"
 }
 
@@ -317,29 +311,36 @@ function clear_vars {
     OLD_PATH="$PATH"
 
     # Set the variables to known safer values
-    IFS=$' tn' #Set IFS to include whitespace characters
+  #  IFS=$' tn' #Set IFS to include whitespace characters
 }
 
 # Function that restores environment variables to what the were at the
 # start of the script.
 function restore_vars {
-    IFS="$OLD_IFS"
-    PATH="$OLD_PATH"
+  IFS="$OLD_IFS"
+  PATH="$OLD_PATH"
 }
 
 # Function to clean up after ourselves
 function clean_up {
-    # Step through and delete all of the temp files
-    for TMP_FILE in "${TEMPFILES[@]}"
-    do
-        # Make sure that the tempfile exists
-        if [ -e "$TMP_FILE" ]; then
-            rm $TMP_FILE
-        fi
-    done
+  local TMP_FILE
+  if [ -e "$HOME/tmp" ];then
+    TEMP_DIR="$HOME/tmp"
+  else
+    TEMP_DIR="/tmp"
+  fi
 
-    # Reset the variables to their original values
-    restore_vars
+  # Step through and delete all of the temp files
+  for TMP_FILE in $(ls "$TEMP_DIR" | grep mytmp.)
+  do
+      # Make sure that the tempfile exists
+      if [ -e "$TEMP_DIR/$TMP_FILE" ]; then
+        rm "$TEMP_DIR/$TMP_FILE"
+      fi
+  done
+
+  # Reset the variables to their original values
+  restore_vars
 }
 
 # Make sure that we delete the temp files when we exit
