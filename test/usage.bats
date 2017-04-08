@@ -2,30 +2,28 @@
 
 load test_helper/helper
 
-TMP_SCRIPT="usage_tmp"
-
 function setup(){
-  touch $TMP_SCRIPT
+  TMP_SCRIPT="$(mktemp $HOME/tmp/focaXXXXX)"
   echo "#!/bin/bash
 source ../sh-common
-  " >> $TMP_SCRIPT
-  chmod +x $TMP_SCRIPT
+  " >> "$TMP_SCRIPT"
+  chmod +x "$TMP_SCRIPT"
 }
 
 function teardown(){
-  [ ! -f $TMP_SCRIPT ] || rm $TMP_SCRIPT
+  [ ! -f "$TMP_SCRIPT" ] || rm "$TMP_SCRIPT"
 }
 
 @test "usage - simple use" {
-  echo "usage" >> $TMP_SCRIPT
-  run ./$TMP_SCRIPT
-  assert_output "usage: $TMP_SCRIPT "
+  echo "usage" >> "$TMP_SCRIPT"
+  run "$TMP_SCRIPT"
+  assert_output "usage: $(basename $TMP_SCRIPT) "
 }
 
 @test "usage - changing command name" {
   new_name="new_command_name"
   echo "usage $new_name" >> $TMP_SCRIPT
-  run ./$TMP_SCRIPT
+  run "$TMP_SCRIPT"
   assert_output "usage: $new_name "
 }
 
@@ -33,16 +31,16 @@ function teardown(){
   usage_info="some information about the script."
   echo "USAGE=\"$usage_info\"
 usage" >> $TMP_SCRIPT
-  run ./$TMP_SCRIPT
-  assert_output "usage: $TMP_SCRIPT $usage_info"
+  run "$TMP_SCRIPT"
+  assert_output "usage: $(basename $TMP_SCRIPT) $usage_info"
 }
 
 @test "usage - long usage version" {
   long_usage="long information about the script"
   echo "LONG_USAGE=\"$long_usage\"
 usage" >> $TMP_SCRIPT
-  run ./$TMP_SCRIPT
-  assert_equal "${lines[0]}" "usage: $TMP_SCRIPT "
+  run "$TMP_SCRIPT"
+  assert_equal "${lines[0]}" "usage: $(basename $TMP_SCRIPT) "
   assert_equal "${lines[1]}" "  $long_usage"
 }
 
@@ -52,8 +50,8 @@ usage" >> $TMP_SCRIPT
   echo "USAGE=\"$usage_info\"
   LONG_USAGE=\"$long_usage\"
   usage" >> $TMP_SCRIPT
-  run ./$TMP_SCRIPT
-  assert_equal "${lines[0]}" "usage: $TMP_SCRIPT $usage_info"
+  run "$TMP_SCRIPT"
+  assert_equal "${lines[0]}" "usage: $(basename $TMP_SCRIPT) $usage_info"
   assert_equal "${lines[1]}" "  $long_usage"
 }
 
@@ -67,6 +65,6 @@ usage" >> $TMP_SCRIPT
   echo "#!/bin/bash
   USAGE=\"$usage_info\"
   source ../sh-common" >> $TMP_SCRIPT
-  run ./$TMP_SCRIPT -h
-  assert_output "usage: $TMP_SCRIPT $usage_info"
+  run $TMP_SCRIPT -h
+  assert_output "usage: $(basename $TMP_SCRIPT) $usage_info"
 }
