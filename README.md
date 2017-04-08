@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/pirpedro/bash-common.svg?branch=test_suite)](https://travis-ci.org/pirpedro/bash-common)
+[![Build Status](https://travis-ci.org/pirpedro/bash-common.svg?branch=master)](https://travis-ci.org/pirpedro/bash-common)
 
 # Bash Common
 
