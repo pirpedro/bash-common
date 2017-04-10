@@ -146,8 +146,6 @@ if equals "$1" "-h"; then
   usage
   exit
 fi
-unset LONG_USAGE
-unset USAGE
 
 #
 # Make a question
