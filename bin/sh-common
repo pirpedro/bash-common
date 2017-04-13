@@ -63,6 +63,9 @@ contains() {
   esac
 }
 
+to_upper() { echo "$1" | tr '[:lower:]' '[:upper:]'; }
+to_lower() { echo "$1" | tr '[:upper:]' '[:lower:]';}
+
 check_boolean(){
   case "$1" in
     [yY] | [yY][eE][sS] | [oO][nN] | ${FLAG_TRUE} ) return ${FLAG_TRUE} ; ;;
