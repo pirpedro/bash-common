@@ -8,9 +8,20 @@ to_alternatives() {
   echo "${parts[*]}"
 }
 
-__to_extglob(){
+__to_extglob() {
   local extglob=$( to_alternatives "$1" )
   echo "$2($extglob)"
+}
+
+
+extglob_on() {
+  __previous_extglob_settings=$(shopt -p extglob)
+  shopt -s extglob
+}
+
+extglob_restore() {
+  eval "$__previous_extglob_settings"
+  unset __previous_extglob_settings
 }
 
 # to_extglob transforms a multiline list of options into an extglob pattern

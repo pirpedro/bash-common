@@ -21,7 +21,3 @@ load test_helper/helper
   run __to_extglob "element1 element2 element3" "@" && assert_success
   assert_output "@(element1|element2|element3)"
 }
-
-@test "case_one - use in case block" {
-  assert_failure
-}
