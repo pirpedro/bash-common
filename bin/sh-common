@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# shellcheck disable=SC2034
+
 #Colors
 NC=`echo -e "\033[0m"`
 BLACK="\033[0;30m"
@@ -37,6 +39,7 @@ WARN_FLAG="${warn_color}!"
 NOTE_FLAG="${note_color}❯"
 
 BASEDIR=$(dirname ${BASH_SOURCE[0]})
+# shellcheck source=bin/sh-extglob
 source $BASEDIR/sh-extglob
 
 #check if a variable is empty
@@ -102,13 +105,14 @@ log(){
 # --flag=<value>
 # --highlight=<value> default value ${highlight}
 __notify(){
+  local color flag
   for arg do
     shift
     case "$arg" in
       --color=* )
-          local color=`echo -e ${arg##--color=}`; ;;
+          color=`echo -e ${arg##--color=}`; ;;
       --flag=* )
-          local flag=`echo -e ${arg##--flag=}`; ;;
+          flag=`echo -e ${arg##--flag=}`; ;;
       --highlight=* ) local highlight_color=${arg##--highlight=}; ;;
       *) set -- "$@" "$arg"; ;;
     esac
@@ -278,20 +282,20 @@ set_global_flag(){
 }
 
 empty_output(){
-  [ $( "$@" | wc -c ) -eq 0 ]
+  [ "$( "$@" | wc -c )" -eq 0 ]
 }
 
 #generate a random value
 random(){
   local length=${1:-8}
   local pattern=${2:-"A-Za-z0-9_"}
-	echo $(cat /dev/urandom | base64 | tr -dc $pattern | head -c$length)
+	echo "$(cat /dev/urandom | base64 | tr -dc $pattern | head -c$length)"
 }
 
 #random number generator
 function rng {
-  local length=${1:-3}
-  local number=`random $length "0-9_" | sed -e "s/^[0]*//"`
+  local number length=${1:-3}
+  number=`random $length "0-9_" | sed -e "s/^[0]*//"`
   if empty "$number"; then
     number=0;
   fi

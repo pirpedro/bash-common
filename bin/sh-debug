@@ -13,7 +13,7 @@ function DEBUG_WATCH() {
   [ ! -z "$1" ] || { echo "Nothing to watch."; exit 1; }
   PS4='Line ${BASH_LINENO[$i]} : '
   set -x
-  $@
+  "$@"
   set +x
   PS4='Line $LINENO : '
 }
