@@ -18,9 +18,9 @@ load test_helper/helper
 }
 
 @test "expand_path - only a filename" {
-  file="testname"
+  file="path/to/testname"
   run expand_path "$file" && assert_success
-  assert_output "$file"
+  assert_output "$(pwd)/$file"
 }
 
 @test "expand_path - '~' expansion" {
@@ -32,5 +32,5 @@ load test_helper/helper
 @test "expand_path - '~+' expansion" {
   file="~+/path/to/file"
   run expand_path "$file" && assert_success
-  assert_output "$PWD/path/to/file"
+  assert_output "$(pwd)/path/to/file"
 }

@@ -407,6 +407,10 @@ function expand_path {
       fi
       ;;
   esac
+
+  if ! startswith "$path" "/"; then
+    path="$(pwd)/$path"
+  fi
   echo "$path"
 }
 
