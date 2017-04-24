@@ -139,7 +139,7 @@ die_with_status () {
 #we recommend to instantiate the variables
 #USAGE and/or LONG_USAGE before sourcing sh-common
 #in your script.
-dashless=$(basename -- "${0%.*}" | sed -e 's/-/ /')
+dashless=$(basename -- "${0%.*}" | sed -e 's/-/ /g')
 usage() {
   local cmd_name
   cmd_name=${1:-$dashless}
