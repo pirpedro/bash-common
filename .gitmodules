@@ -1,6 +1,9 @@
-[submodule "test/test_helper/bats-support"]
+[submodule "bats-support"]
 	path = test/test_helper/bats-support
 	url = https://github.com/bats-core/bats-support
-[submodule "test/test_helper/bats-assert"]
+[submodule "bats-assert"]
 	path = test/test_helper/bats-assert
 	url = https://github.com/bats-core/bats-assert
+[submodule "inquirer"]
+	path = vendor/inquirer
+	url = https://github.com/pirpedro/Inquirer.sh

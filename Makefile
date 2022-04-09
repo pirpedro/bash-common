@@ -3,8 +3,11 @@ DESTDIR ?= $(PREFIX)/scripts
 DIST_FILE_NAME = bash-common.sh
 BINS = $(wildcard bin/*.sh)
 CODE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-DIST_FILE = dist/$(DIST_FILE_NAME)
-SHEBANG = '\#!/usr/bin/env bash' 
+DIST_DIR = dist
+DIST_FILE = $(DIST_DIR)/$(DIST_FILE_NAME)
+SHEBANG = '\#!/usr/bin/env bash'
+INQUIRER = vendor/inquirer/dist/inquirer.sh
+DISTS = $(wildcard dist/*.sh) 
 
 default: install
 
@@ -16,9 +19,11 @@ build:
 	@$(foreach BIN, $(BINS), \
 		tail -n +2 $(BIN) >> $(TEMPFILE); \
 	)
-	@mv -f $(TEMPFILE) $(DIST_FILE)
+	@cp -f $(TEMPFILE) $(DIST_FILE)
+	@git submodule update --remote
+	@cp -f $(INQUIRER) $(DIST_DIR)/
 install: 
 	@mkdir -p $(DESTDIR)
-	@echo "... installing $(DIST_FILE_NAME) to $(DESTDIR)"
-	@cp -f $(DIST_FILE) $(DESTDIR)/
+	@echo "... installing $(DISTS) to $(DESTDIR)"
+	@cp -f $(DISTS) $(DESTDIR)/
 	@echo "For usage, you need to include 'source $(DESTDIR)/$(DIST_FILE_NAME)' in your shellscript."
