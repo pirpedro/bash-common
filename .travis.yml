@@ -6,7 +6,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq bats
   - sudo chmod +x .travis/build.sh
-  - sudo chmod +x bin/sh-common
-  - sudo chmod +x bin/sh-debug
+  - sudo chmod +x bin/common.sh
+  - sudo chmod +x bin/debug.sh
 script:
   - .travis/build.sh

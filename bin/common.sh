@@ -38,10 +38,6 @@ QUESTION_FLAG="${question_color}?"
 WARN_FLAG="${warn_color}!"
 NOTE_FLAG="${note_color}❯"
 
-BASEDIR=$(dirname ${BASH_SOURCE[0]})
-# shellcheck source=bin/sh-extglob
-source $BASEDIR/sh-extglob
-
 #check if a variable is empty
 empty(){ [ -z "$1" ]; }
 

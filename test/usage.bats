@@ -7,7 +7,7 @@ function setup(){
   rm -rf ~/tmp/*
   TMP_SCRIPT="$(mktmp_file)"
   echo "#!/bin/bash
-source ../bin/sh-common
+source ../bin/common.sh
   " >> "$TMP_SCRIPT"
   chmod +x "$TMP_SCRIPT"
 }
@@ -60,13 +60,13 @@ usage" >> $TMP_SCRIPT
 @test "usage - using '-h' flag" {
   #if you want to use -h flag and custom the output,
   #it's necessary to create USAGE and/or LONG_USAGE
-  #before the inclusion of sh-common in the script.
+  #before the inclusion of common.sh in the script.
   teardown
   touch $TMP_SCRIPT && chmod +x $TMP_SCRIPT
   usage_info="some information about the script."
   echo "#!/bin/bash
   USAGE=\"$usage_info\"
-  source ../bin/sh-common" >> $TMP_SCRIPT
+  source ../bin/common.sh" >> $TMP_SCRIPT
   run $TMP_SCRIPT -h
   assert_output "usage: $(basename ${TMP_SCRIPT%.*}) $usage_info"
 }
