@@ -24,6 +24,6 @@ PROJECT_ROOT="$( cd "$( dirname "$BATS_TEST_FILENAME" )/.." >/dev/null 2>&1 && p
 # make executables in src/ visible to PATH
 PATH="$PROJECT_ROOT/bin:$PATH"
 
-source "common.sh"
-source "debug.sh"
-source "extglob.sh"
+for f in $PROJECT_ROOT/bin/*; do
+  source $(basename "$f")
+done

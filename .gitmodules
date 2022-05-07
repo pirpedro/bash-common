@@ -1,9 +1,12 @@
 [submodule "bats-support"]
-	path = test/test_helper/bats-support
-	url = https://github.com/bats-core/bats-support
+  path = test/test_helper/bats-support
+  url = https://github.com/bats-core/bats-support
 [submodule "bats-assert"]
-	path = test/test_helper/bats-assert
-	url = https://github.com/bats-core/bats-assert
+  path = test/test_helper/bats-assert
+  url = https://github.com/bats-core/bats-assert
 [submodule "inquirer"]
-	path = vendor/inquirer
-	url = https://github.com/pirpedro/Inquirer.sh
+  path = vendor/inquirer
+  url = https://github.com/pirpedro/Inquirer.sh
+[submodule "realpaths"]
+  path = vendor/realpaths
+  url = https://github.com/bashup/realpaths
